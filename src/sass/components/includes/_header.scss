@@ -1,0 +1,68 @@
+.header {
+    @apply
+        .p-2
+        .mb-2
+        .text-white;
+
+    background-color: $main-color;
+
+    &__columns {
+        @apply .items-center;
+    }
+
+    &__logo {
+        @apply
+            .w-full
+            .my-0 .mx-auto;
+
+        max-width: 180px;
+
+        a { @apply .block; }
+    }
+
+    &__image { @apply .mr-1; }
+
+    &__active-order {
+        @apply .text-sm;
+
+        a {
+            @apply
+                .text-white
+                .text-sm;
+        }
+    }
+
+    &__info {
+        @apply
+            .flex
+            .justify-end;
+
+    }
+
+    &__profile {
+        @apply .text-sm;
+    }
+}
+
+.logo_column {
+    @apply .column--12;
+}
+
+.active-order_column {
+    @apply .column--10;
+}
+
+.profile_column {
+    @apply .column--2;
+}
+
+@screen md {
+    .header__columns { @apply .justify-between; }
+    .logo_column { @apply .column--2; }
+    .active-order_column { @apply .column--4; }
+    .profile_column { @apply .column--2; }
+}
+
+@screen lg {}
+
+@screen xl {}

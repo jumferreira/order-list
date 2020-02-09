@@ -1,0 +1,52 @@
+#app {
+    @apply
+        .min-h-screen
+        .flex
+        .flex-col
+        .justify-between;
+}
+
+.container {
+    @apply
+        .mx-auto
+        .relative;
+
+    max-width: 75rem;
+}
+
+.main {
+    @apply
+        .flex-grow
+        .flex-shrink-0;
+}
+
+.columns {
+    @apply
+        .flex
+        .flex-wrap;
+}
+
+.column {
+    @apply
+        .relative
+        .flex-grow
+        .flex-shrink
+        .p-3;
+
+    flex-basis: 0;
+
+    @for $i from 1 through 12 {
+        &--#{$i} {
+            flex: none;
+            width: ($i / 12) * 100%;
+        }
+
+        &--offset-#{$i} {
+            margin-left: ($i / 12) * 100%
+        }
+    }
+}
+
+[v-cloak] {
+    display: none;
+}
