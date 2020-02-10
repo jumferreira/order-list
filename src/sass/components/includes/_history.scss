@@ -1,11 +1,66 @@
 .order-history {
 
-    &__list {}
-    &__item {}
+    &__title {
+        @apply .mb-3;
+
+        color: $third-color;
+    }
+
+    &__list {
+        max-height: 450px;
+        overflow-y: auto;
+    }
+
+    &__item {
+        @apply .p-2;
+
+        max-width: 350px;
+        color: $font-color;
+        border-bottom: 1px solid $third-color;
+
+        &-restaurant {
+            @apply .font-bold;
+            color: $main-color;
+        }
+
+        &-time, &-details {
+            @apply .text-sm;
+
+            color: $font-color;
+        }
+
+        &-total {
+            @apply
+                .font-bold
+                .mb-3;
+
+            color: $third-color;
+        }
+
+        &-status {
+            @apply
+                .font-bold
+                .text-sm;
+
+            color: $font-color;
+
+            &.delivered {
+                color: $third-color;
+            }
+
+            &.in-transit {
+                color: $main-color;
+            }
+        }
+
+        &-details {}
+    }
 }
 
-@screen md {
+.history_column { @apply .column--12; }
 
+@screen md {
+    .history_column { @apply .column--6; }
 }
 
 @screen lg {}

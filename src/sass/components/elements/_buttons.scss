@@ -1,0 +1,22 @@
+.button {
+    @apply
+        .text-white
+        .font-bold
+        .py-2
+        .px-4
+        .rounded;
+
+        background: $third-color-ligther;
+
+        &:hover {
+            background: $third-color;
+        }
+
+    &--cancel {
+        background: $third-color-ligther;
+
+        &:hover {
+            background: $third-color;
+        }
+    }
+}

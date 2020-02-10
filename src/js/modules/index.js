@@ -25,6 +25,10 @@ export default {
         setOrderDetails ({ commit }, orderDetails) {
             commit('SET_ORDER_DETAILS', orderDetails);
         },
+
+        updateInformation ({ commit }, information) {
+            commit('UPDATE_CUSTOMER_INFORMATION', information);
+        },
     },
 
     mutations: {
@@ -38,6 +42,10 @@ export default {
 
         'SET_ORDER_DETAILS' (state, orderDetails) {
             state.orderDetails = orderDetails;
+        },
+
+        'UPDATE_CUSTOMER_INFORMATION' (state, information) {
+            state.information = information;
         },
     },
 };
