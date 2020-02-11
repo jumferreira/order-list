@@ -18,15 +18,8 @@
                                 class="header__active-order"
                             >
                                 <p>You have an activate order.</p>
-                                <a href="">Click here for details</a>
+                                <button @click="openModal()">Click here for details</button>
                             </div>
-                        </div>
-
-                        <div class="column profile_column">
-                            <button class="header__profile">
-                                <i class="far fa-user"></i>
-                                Profile
-                            </button>
                         </div>
                     </div>
                 </div>
@@ -157,7 +150,8 @@
                                     <div class="flex justify-between">
                                         <span
                                             class="order-history__item-restaurant"
-                                            v-text="item.restaurantName"
+                                            v-text="restaurantName(item.restaurantName)"
+                                            :title="item.restaurantName"
                                         ></span>
                                         <span
                                             class="order-history__item-time"
@@ -196,6 +190,59 @@
                 </div>
             </div>
         </div>
+
+        <modal
+            name="orderModal"
+            :width="365"
+            :height="215"
+        >
+            <div class="modal">
+                <div class="modal_header">
+                    <h1 class="modal_title" v-text="'Order Detail'"></h1>
+
+                    <button class="modal_close" @click="closeModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <div class="modal_body">
+                    <div class="flex justify-between">
+                        <span
+                            class="modal_body-restaurant"
+                            v-text="restaurantName(activeOrder[0].restaurantName)"
+                            :title="activeOrder[0].restaurantName"
+                        ></span>
+                        <span
+                            class="modal_body-time"
+                            v-text="'(' + orderDateTime(activeOrder[0].orderTime) + ')'"
+                        ></span>
+                    </div>
+
+                    <p
+                        class="modal_body-total"
+                        v-text="userCurrency + activeOrder[0].orderTotal"
+                    ></p>
+
+                    <p class="modal_body-address">
+                        <i class="fas fa-home"></i>
+                        {{ activeOrder[0].deliveryAddress }}
+                    </p>
+
+                    <div>
+                        <span
+                            class="modal_body-status"
+                            v-text="'Status: '"
+                        ></span>
+
+                        <span
+                            class="modal_body-status"
+                            :class="deliveryClass(activeOrder[0].status)"
+                            v-text="activeOrder[0].status"
+                        ></span>
+                    </div>
+                </div>
+            </div>
+        </modal>
     </div>
 </template>
 
@@ -204,14 +251,16 @@ import { mapActions, mapGetters } from 'vuex';
 import moment from 'moment';
 import {
     cloneDeep as _cloneDeep,
-    some as _some
+    truncate as _truncate,
+    filter as _filter,
+    some as _some,
 } from 'lodash';
-
 
 export default {
     data: () => ({
         showEdit: false,
         newData: {},
+        modalName: null,
     }),
 
     computed: {
@@ -243,13 +292,13 @@ export default {
         hasActiveOrder () {
             return _some(this.history.last5Orders, { 'status': 'In transit'});
         },
+
+        activeOrder () {
+            return _filter(this.history.last5Orders, { 'status': 'In transit'});
+        },
     },
 
     methods: {
-        // ...mapActions([
-        //     'setCustomerInformation',
-        // ]),
-
         async getCustomerInformation () {
             const { data } = await axios.get('https://api.myjson.com/bins/pdefl');
             this.$store.dispatch('customer/setInformation', data);
@@ -265,12 +314,29 @@ export default {
             this.$store.dispatch('customer/setOrderDetails', data);
         },
 
+        getAllData () {
+            this.getCustomerInformation();
+            this.getCustomerHistory();
+            this.getCustomerDetail();
+        },
+
         updateInformation () {
             this.$store.dispatch('customer/updateInformation', this.newData);
         },
 
         orderTime (time) {
             return moment(time).format('DD-MM-YYYY');
+        },
+
+        orderDateTime (time) {
+            return moment(time).format('DD-MM-YYYY HH:mm');
+        },
+
+        restaurantName (name) {
+            return _truncate(name, {
+                length: 28,
+                separator: '...'
+            });
         },
 
         toggleEditBlock () {
@@ -290,19 +356,18 @@ export default {
                     return 'delivered';
             }
         },
-    },
 
-    beforeMount () {
-        this.getCustomerInformation();
-        this.getCustomerHistory();
-        this.getCustomerDetail();
+        openModal () {
+            this.$modal.show('orderModal');
+        },
+
+        closeModal () {
+            this.$modal.hide('orderModal');
+        },
     },
 
     mounted () {
-        // this.setNewData();
+        this.getAllData();
     },
 };
 </script>
-<style lang="sass">
-
-</style>

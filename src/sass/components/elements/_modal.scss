@@ -1,23 +1,22 @@
-.order-history {
+.modal {
+    @apply .p-4;
 
-    &__title {
-        @apply .mb-3;
+    &_header {
+        @apply
+            .flex
+            .justify-between
+            .mb-2;
+    }
+
+    &_title {
+        @apply.text-2xl;
 
         color: $third-color;
     }
 
-    &__list {
-        max-height: 450px;
-        overflow-y: auto;
-    }
+    &_close {}
 
-    &__item {
-        @apply .p-2;
-
-        width: 100%;
-        color: $font-color;
-        border-bottom: 1px solid $third-color;
-
+    &_body {
         &-restaurant {
             @apply .font-bold;
             color: $main-color;
@@ -53,23 +52,19 @@
             }
         }
 
-        &-details {}
+        &-address {
+            @apply .mb-3;
+
+            color: $third-color;
+        }
+
+    }
+
+
+
+    &_footer {
+        @apply
+            .text-right
+            .mt-2;
     }
 }
-
-.history_column {
-    @apply .column--12;
-}
-
-@screen md {
-    .history_column { @apply .column--6; }
-
-    .order-history__list {
-        max-height: 450px;
-        max-width: 360px;
-    }
-}
-
-@screen lg {}
-
-@screen xl {}

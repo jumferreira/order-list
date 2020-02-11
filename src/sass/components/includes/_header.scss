@@ -49,7 +49,10 @@
 }
 
 .active-order_column {
-    @apply .column--10;
+    @apply
+        .flex
+        .column--12
+        .justify-center;
 }
 
 .profile_column {
@@ -59,7 +62,11 @@
 @screen md {
     .header__columns { @apply .justify-between; }
     .logo_column { @apply .column--2; }
-    .active-order_column { @apply .column--4; }
+    .active-order_column {
+        @apply
+            .column--4
+            .justify-end;
+    }
     .profile_column { @apply .column--2; }
 }
 
