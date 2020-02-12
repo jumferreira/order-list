@@ -2,9 +2,9 @@ export default {
     namespaced: true,
 
     state: {
-        information: {},
-        history: {},
-        orderDetails: {},
+        information: JSON.parse(window.localStorage.getItem('customerInformation')),
+        history: JSON.parse(window.localStorage.getItem('customerHistory')),
+        orderDetails: JSON.parse(window.localStorage.getItem('customerDetail')),
     },
 
     getters: {
@@ -34,18 +34,22 @@ export default {
     mutations: {
         'SET_CUSTOMER_INFORMATION' (state, information) {
             state.information = information;
+            window.localStorage.setItem('customerInformation', JSON.stringify(information));
         },
 
         'SET_CUSTOMER_HISTORY' (state, history) {
             state.history = history;
+            window.localStorage.setItem('customerHistory', JSON.stringify(history));
         },
 
         'SET_ORDER_DETAILS' (state, orderDetails) {
             state.orderDetails = orderDetails;
+            window.localStorage.setItem('customerDetail', JSON.stringify(orderDetails));
         },
 
         'UPDATE_CUSTOMER_INFORMATION' (state, information) {
             state.information = information;
+            window.localStorage.setItem('customerInformation', JSON.stringify(information));
         },
     },
 };

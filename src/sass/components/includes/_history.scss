@@ -7,16 +7,22 @@
     }
 
     &__list {
-        max-height: 450px;
-        overflow-y: auto;
+        @apply
+            .flex
+            .flex-wrap
+            .justify-center;
     }
 
     &__item {
-        @apply .p-2;
+        @apply
+            .p-2
+            .mr-2
+            .mb-2;
 
         width: 100%;
+        max-width: 345px;
         color: $font-color;
-        border-bottom: 1px solid $third-color;
+        border: 1px solid $main-color;
 
         &-restaurant {
             @apply .font-bold;
@@ -62,11 +68,10 @@
 }
 
 @screen md {
-    .history_column { @apply .column--6; }
+    .history_column { @apply .column--8; }
 
     .order-history__list {
-        max-height: 450px;
-        max-width: 360px;
+        @apply .justify-start;
     }
 }
 

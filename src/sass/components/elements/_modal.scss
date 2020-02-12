@@ -18,7 +18,9 @@
 
     &_body {
         &-restaurant {
-            @apply .font-bold;
+            @apply
+                .font-bold
+                .mb-3;
             color: $main-color;
         }
 
@@ -39,7 +41,9 @@
         &-status {
             @apply
                 .font-bold
-                .text-sm;
+                .text-sm
+                .mt-4
+                .mb-1;
 
             color: $font-color;
 
@@ -52,8 +56,26 @@
             }
         }
 
+        &-history {
+            @apply .text-sm;
+
+            color: $font-color-lighter;
+        }
+
+        &-delivery {
+            @apply .text-sm;
+
+            color: $font-color-lighter;
+        }
+
+        &-product {
+            @apply .text-sm;
+
+            color: $font-color;
+        }
+
         &-address {
-            @apply .mb-3;
+            @apply .my-3;
 
             color: $third-color;
         }

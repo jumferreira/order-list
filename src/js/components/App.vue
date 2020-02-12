@@ -17,9 +17,11 @@
                                 v-if="hasActiveOrder"
                                 class="header__active-order"
                             >
-                                <p>You have an activate order.</p>
-                                <button @click="openModal()">Click here for details</button>
+                                <p>{{ $t("header.activateOrder") }}</p>
+                                <button @click="openModal()">{{ $t("header.activateOrderButton") }}</button>
                             </div>
+
+                            <language-switcher></language-switcher>
                         </div>
                     </div>
                 </div>
@@ -32,16 +34,16 @@
                     <div class="column profile_column">
                         <div class="profile">
                             <div class="profile__picture">
-                                <img :src="information.picture.medium" :alt="information.firstName">
+                                <img v-if="information.picture" :src="information.picture.medium" :alt="information.firstName">
                             </div>
 
                             <div class="profile__info">
                                 <h2 class="profile__info-salute">
-                                    Hello, {{ information.firstName }}
+                                    {{ $t("profile.salute") }}{{ information.firstName }}
                                 </h2>
 
                                 <p class="profile__info-member">
-                                    You're a member since: {{ memberSince }}
+                                    {{ $t("profile.memberSince") }}{{ memberSince }}
                                 </p>
 
                                 <p class="profile__info-birthday">
@@ -59,7 +61,7 @@
                                     @click="toggleEditBlock()"
                                 >
                                     <i class="fas fa-pencil-alt"></i>
-                                    edit profile
+                                    {{ $t("profile.edit") }}
                                 </button>
                             </div>
 
@@ -120,25 +122,27 @@
                                 v-model="newData.address"
                             >
 
-                            <button
-                                class="button"
-                                @click="toggleEditBlock()"
-                            >
-                                Cancel
-                            </button>
+                            <div class="flex justify-end">
+                                <button
+                                    class="button button--cancel"
+                                    @click="toggleEditBlock()"
+                                >
+                                    Cancel
+                                </button>
 
-                            <button
-                                class="button"
-                                @click="updateInformation()"
-                            >
-                                Update
-                            </button>
+                                <button
+                                    class="button"
+                                    @click="updateInformation()"
+                                >
+                                    Update
+                                </button>
+                            </div>
                         </div>
                     </div>
 
                     <div class="column history_column">
                         <div class="order-history">
-                            <h2 class="order-history__title">Order History</h2>
+                            <h2 class="order-history__title">{{ $t("history.title") }}</h2>
 
                             <ul class="order-history__list">
                                 <li
@@ -164,24 +168,16 @@
                                         v-text="userCurrency + item.orderTotal"
                                     ></p>
 
-                                    <div class="flex justify-between">
-                                        <div>
-                                            <span
-                                                class="order-history__item-status"
-                                                v-text="'Status: '"
-                                            ></span>
+                                    <div>
+                                        <span class="order-history__item-status">
+                                            {{ $t("history.status") }}
+                                        </span>
 
-                                            <span
-                                                class="order-history__item-status"
-                                                :class="deliveryClass(item.status)"
-                                                v-text="item.status"
-                                            ></span>
-                                        </div>
-
-                                        <button class="order-history__item-details">
-                                            <i class="fas fa-plus"></i>
-                                            details
-                                        </button>
+                                        <span
+                                            class="order-history__item-status"
+                                            :class="deliveryClass(item.status)"
+                                            v-text="item.status"
+                                        ></span>
                                     </div>
                                 </li>
                             </ul>
@@ -194,11 +190,11 @@
         <modal
             name="orderModal"
             :width="365"
-            :height="215"
+            :height="360"
         >
             <div class="modal">
                 <div class="modal_header">
-                    <h1 class="modal_title" v-text="'Order Detail'"></h1>
+                    <h1 class="modal_title">{{ $t("modal.title") }}</h1>
 
                     <button class="modal_close" @click="closeModal()">
                         <i class="fas fa-times"></i>
@@ -209,37 +205,64 @@
                     <div class="flex justify-between">
                         <span
                             class="modal_body-restaurant"
-                            v-text="restaurantName(activeOrder[0].restaurantName)"
-                            :title="activeOrder[0].restaurantName"
+                            v-text="restaurantName(orderDetails.restaurantName)"
+                            :title="orderDetails.restaurantName"
                         ></span>
                         <span
                             class="modal_body-time"
-                            v-text="'(' + orderDateTime(activeOrder[0].orderTime) + ')'"
+                            v-text="'(' + orderDateTime(orderDetails.orderTime) + ')'"
                         ></span>
                     </div>
 
-                    <p
-                        class="modal_body-total"
-                        v-text="userCurrency + activeOrder[0].orderTotal"
-                    ></p>
+                    <template v-for="(product, index) in orderDetails.products">
+                        <p
+                            class="modal_body-product"
+                            :key="index"
+                        >
+                            <i class="fas fa-utensils"></i>
+                            {{ product.productName + ' (' + userCurrency + ' ' + product.pricePerUnitWithTax + ')' }}
+                        </p>
+                    </template>
+
+                    <p class="modal_body-delivery">
+                        {{ $t("modal.delivery") + ' (' + userCurrency + ' ' + orderDetails.deliveryCosts + ')' }}
+                    </p>
+
+                    <hr>
+
+                    <div>
+                        <span>{{ $t("modal.total") }}</span>
+                        <span
+                            class="modal_body-total"
+                            v-text="userCurrency + orderDetails.orderTotal"
+                        ></span>
+                    </div>
 
                     <p class="modal_body-address">
                         <i class="fas fa-home"></i>
-                        {{ activeOrder[0].deliveryAddress }}
+                        {{ orderDetails.deliveryAddress }}
                     </p>
 
-                    <div>
-                        <span
-                            class="modal_body-status"
-                            v-text="'Status: '"
-                        ></span>
+                    <div class="modal_body-status">
+                        <span>
+                            {{ $t("modal.status") }}
+                        </span>
 
                         <span
                             class="modal_body-status"
-                            :class="deliveryClass(activeOrder[0].status)"
-                            v-text="activeOrder[0].status"
+                            :class="deliveryClass(orderDetails.status)"
+                            v-text="orderDetails.status.currentStatus"
                         ></span>
                     </div>
+
+                    <template v-for="(history, index) in orderDetails.status.history">
+                        <p
+                            class="modal_body-history"
+                            :key="'history-' + index"
+                        >
+                            {{ history.status + ' (' + orderDateTime(history.statusStart) + ')' }}
+                        </p>
+                    </template>
                 </div>
             </div>
         </modal>
@@ -252,6 +275,7 @@ import moment from 'moment';
 import {
     cloneDeep as _cloneDeep,
     truncate as _truncate,
+    isEmpty as _isEmpty,
     filter as _filter,
     some as _some,
 } from 'lodash';
@@ -290,28 +314,34 @@ export default {
         },
 
         hasActiveOrder () {
-            return _some(this.history.last5Orders, { 'status': 'In transit'});
+            return _some(this.history.last5Orders, {'status': 'In transit'});
         },
 
         activeOrder () {
-            return _filter(this.history.last5Orders, { 'status': 'In transit'});
+            return _filter(this.history.last5Orders, {'status': 'In transit'});
         },
     },
 
     methods: {
         async getCustomerInformation () {
-            const { data } = await axios.get('https://api.myjson.com/bins/pdefl');
-            this.$store.dispatch('customer/setInformation', data);
+            if (_isEmpty(this.information)) {
+                const { data } = await axios.get('https://api.myjson.com/bins/pdefl');
+                this.$store.dispatch('customer/setInformation', data);
+            }
         },
 
         async getCustomerHistory () {
-            const { data } = await axios.get('https://api.myjson.com/bins/19f9bd');
-            this.$store.dispatch('customer/setHistory', data);
+            if (_isEmpty(this.history)) {
+                const { data } = await axios.get('https://api.myjson.com/bins/19f9bd');
+                this.$store.dispatch('customer/setHistory', data);
+            }
         },
 
         async getCustomerDetail () {
-            const { data } = await axios.get('https://api.myjson.com/bins/o1sp5');
-            this.$store.dispatch('customer/setOrderDetails', data);
+            if (_isEmpty(this.orderDetails)) {
+                const { data } = await axios.get('https://api.myjson.com/bins/o1sp5');
+                this.$store.dispatch('customer/setOrderDetails', data);
+            }
         },
 
         getAllData () {
@@ -322,6 +352,7 @@ export default {
 
         updateInformation () {
             this.$store.dispatch('customer/updateInformation', this.newData);
+            this.showEdit = false;
         },
 
         orderTime (time) {
