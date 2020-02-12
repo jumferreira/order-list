@@ -8,10 +8,12 @@
     "hot": "NODE_ENV=development webpack-dev-server --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
     "prod": "NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
     "build": "yarn prod",
-    "start": "serve ./dist --single"
+    "start": "serve ./dist --single",
+    "test": "jest"
   },
   "devDependencies": {
-    "axios": "^0.19.2"
+    "axios": "^0.19.2",
+    "jest": "^25.1.0"
   },
   "dependencies": {
     "html-webpack-plugin": "^3.2.0",
