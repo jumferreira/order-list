@@ -14186,6 +14186,45 @@ hr {
   border-color: #2d3748;
 }
 
+.loader {
+  display: none;
+  border-radius: 9999px;
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: auto;
+  margin-right: auto;
+  border: 16px solid #f78028;
+  border-top: 16px solid #0a3847;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite;
+          animation: spin 2s linear infinite;
+}
+
+.loader.is-active {
+  display: block;
+}
+
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 .modal {
   padding: 1rem;
 }

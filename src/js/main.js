@@ -29,11 +29,10 @@ Vue.use(VueI18n);
 
 // Languages
 const messages = languages;
-export default messages;
 
 const i18n = new VueI18n({
-  locale: 'en', // set locale
-  messages, // set locale messages
+  locale: 'en',
+  messages,
 })
 
 // Vuex

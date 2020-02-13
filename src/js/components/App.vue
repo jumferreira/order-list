@@ -30,7 +30,10 @@
 
         <div class="body">
             <div class="container">
-                <div class="columns">
+
+                <div class="loader" :class="{ 'is-active': isLoading }"></div>
+
+                <div v-if="! isLoading" class="columns">
                     <div class="column profile_column">
                         <div class="profile">
                             <div class="profile__picture">
@@ -303,6 +306,7 @@ export default {
 
     data: () => ({
         showEdit: false,
+        isLoading: true,
         newData: {},
         modalName: null,
     }),
@@ -357,22 +361,37 @@ export default {
     methods: {
         async getCustomerInformation () {
             if (_isEmpty(this.information)) {
-                const { data } = await axios.get('https://api.myjson.com/bins/pdefl');
-                this.$store.dispatch('customer/setInformation', data);
+                try {
+                    const { data } = await axios.get('https://api.myjson.com/bins/pdefl');
+
+                    this.$store.dispatch('customer/setInformation', data);
+                } catch (error) {
+                    console.error(error);
+                }
             }
         },
 
         async getCustomerHistory () {
             if (_isEmpty(this.history)) {
-                const { data } = await axios.get('https://api.myjson.com/bins/19f9bd');
-                this.$store.dispatch('customer/setHistory', data);
+                try {
+                    const { data } = await axios.get('https://api.myjson.com/bins/19f9bd');
+
+                    this.$store.dispatch('customer/setHistory', data);
+                } catch (error) {
+                    console.error(error);
+                }
             }
         },
 
         async getCustomerDetail () {
             if (_isEmpty(this.orderDetails)) {
-                const { data } = await axios.get('https://api.myjson.com/bins/o1sp5');
-                this.$store.dispatch('customer/setOrderDetails', data);
+                try {
+                    const { data } = await axios.get('https://api.myjson.com/bins/o1sp5');
+
+                    this.$store.dispatch('customer/setOrderDetails', data);
+                } catch (error) {
+                    console.error(error);
+                }
             }
         },
 
@@ -380,6 +399,8 @@ export default {
             this.getCustomerInformation();
             this.getCustomerHistory();
             this.getCustomerDetail();
+
+            this.isLoading = false;
         },
 
         updateInformation () {

@@ -21,13 +21,6 @@ mix
             })
         ],
         output: { publicPath: '' },
-        module.exports = {
-          resolve: {
-            alias: {
-              'vue$': 'vue/dist/vue.esm.js'
-            }
-          }
-        }
     })
     .purgeCss({
         globs: [ './src/**/index.html', './src/**/*.vue' ],

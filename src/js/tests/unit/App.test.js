@@ -19,8 +19,6 @@ localVue.use(VueI18n);
 localVue.use(VModal);
 localVue.component('language-switcher', LanguageSwitcher);
 
-jest.mock('axios')
-
 describe('Apps', () => {
     let actions
     let store
@@ -29,7 +27,7 @@ describe('Apps', () => {
     beforeEach(() => {
         i18n = new VueI18n({
             locale: 'en',
-            languages,
+            messages: languages,
         })
 
         actions = {
