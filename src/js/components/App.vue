@@ -34,11 +34,15 @@
                     <div class="column profile_column">
                         <div class="profile">
                             <div class="profile__picture">
-                                <img v-if="information.picture" :src="information.picture.medium" :alt="information.firstName">
+                                <img
+                                    v-if="information"
+                                    :src="information.picture.medium"
+                                    :alt="information.firstName"
+                                >
                             </div>
 
                             <div class="profile__info">
-                                <h2 class="profile__info-salute">
+                                <h2 v-if="information" class="profile__info-salute">
                                     {{ $t("profile.salute") }}{{ information.firstName }}
                                 </h2>
 
@@ -51,7 +55,7 @@
                                     {{ birthday }}
                                 </p>
 
-                                <p class="profile__info-address">
+                                <p v-if="information" class="profile__info-address">
                                     <i class="fas fa-home"></i>
                                     {{ information.address }}
                                 </p>
@@ -73,6 +77,7 @@
                         >
                             <div class="flex justify-between">
                                 <input
+                                    v-if="newData"
                                     class="input input--50 input--grey mr-2"
                                     type="text"
                                     name="firstName"
@@ -81,6 +86,7 @@
                                 >
 
                                 <input
+                                    v-if="newData"
                                     class="input input--50 input--grey"
                                     type="text"
                                     name="lastName"
@@ -91,6 +97,7 @@
 
                             <div class="flex justify-between">
                                 <input
+                                    v-if="newData"
                                     class="input input--50 input--grey mr-2"
                                     type="date"
                                     name="birthday"
@@ -98,6 +105,7 @@
                                 >
 
                                 <select
+                                    v-if="newData"
                                     class="input input--50 input--grey"
                                     v-model="newData.gender"
                                 >
@@ -107,6 +115,7 @@
                             </div>
 
                             <input
+                                v-if="newData"
                                 class="input input--full input--grey"
                                 type="email"
                                 name="emailAddress"
@@ -115,6 +124,7 @@
                             >
 
                             <input
+                                v-if="newData"
                                 class="input input--full input--grey"
                                 type="text"
                                 name="address"
@@ -144,12 +154,11 @@
                         <div class="order-history">
                             <h2 class="order-history__title">{{ $t("history.title") }}</h2>
 
-                            <ul class="order-history__list">
+                            <ul v-if="history" class="order-history__list">
                                 <li
                                     v-for="(item, key) in history.last5Orders"
                                     :key="key"
                                     class="order-history__item"
-                                    @click=""
                                 >
                                     <div class="flex justify-between">
                                         <span
@@ -168,7 +177,7 @@
                                         v-text="userCurrency + item.orderTotal"
                                     ></p>
 
-                                    <div>
+                                    <div v-if="item">
                                         <span class="order-history__item-status">
                                             {{ $t("history.status") }}
                                         </span>
@@ -204,33 +213,39 @@
                 <div class="modal_body">
                     <div class="flex justify-between">
                         <span
+                            v-if="orderDetails"
                             class="modal_body-restaurant"
                             v-text="restaurantName(orderDetails.restaurantName)"
                             :title="orderDetails.restaurantName"
                         ></span>
                         <span
+                            v-if="orderDetails"
                             class="modal_body-time"
                             v-text="'(' + orderDateTime(orderDetails.orderTime) + ')'"
                         ></span>
                     </div>
 
-                    <template v-for="(product, index) in orderDetails.products">
-                        <p
-                            class="modal_body-product"
-                            :key="index"
-                        >
-                            <i class="fas fa-utensils"></i>
-                            {{ product.productName + ' (' + userCurrency + ' ' + product.pricePerUnitWithTax + ')' }}
-                        </p>
+
+                    <template v-if="orderDetails">
+                        <template v-for="(product, index) in orderDetails.products">
+                            <p
+                                v-if="product"
+                                class="modal_body-product"
+                                :key="index"
+                            >
+                                <i class="fas fa-utensils"></i>
+                                {{ product.productName + ' (' + userCurrency + ' ' + product.pricePerUnitWithTax + ')' }}
+                            </p>
+                        </template>
                     </template>
 
-                    <p class="modal_body-delivery">
+                    <p v-if="orderDetails" class="modal_body-delivery">
                         {{ $t("modal.delivery") + ' (' + userCurrency + ' ' + orderDetails.deliveryCosts + ')' }}
                     </p>
 
                     <hr>
 
-                    <div>
+                    <div v-if="orderDetails">
                         <span>{{ $t("modal.total") }}</span>
                         <span
                             class="modal_body-total"
@@ -238,12 +253,12 @@
                         ></span>
                     </div>
 
-                    <p class="modal_body-address">
+                    <p v-if="orderDetails" class="modal_body-address">
                         <i class="fas fa-home"></i>
                         {{ orderDetails.deliveryAddress }}
                     </p>
 
-                    <div class="modal_body-status">
+                    <div v-if="orderDetails" class="modal_body-status">
                         <span>
                             {{ $t("modal.status") }}
                         </span>
@@ -255,13 +270,16 @@
                         ></span>
                     </div>
 
-                    <template v-for="(history, index) in orderDetails.status.history">
-                        <p
-                            class="modal_body-history"
-                            :key="'history-' + index"
-                        >
-                            {{ history.status + ' (' + orderDateTime(history.statusStart) + ')' }}
-                        </p>
+                    <template v-if="orderDetails">
+                        <template v-for="(history, index) in orderDetails.status.history">
+                            <p
+                                v-if="history"
+                                class="modal_body-history"
+                                :key="'history-' + index"
+                            >
+                                {{ history.status + ' (' + orderDateTime(history.statusStart) + ')' }}
+                            </p>
+                        </template>
                     </template>
                 </div>
             </div>
@@ -281,6 +299,8 @@ import {
 } from 'lodash';
 
 export default {
+    name: 'App',
+
     data: () => ({
         showEdit: false,
         newData: {},
@@ -295,30 +315,42 @@ export default {
         ]),
 
         birthday () {
-            return moment(this.information.birthday).format('DD.MM.YYYY');
+            if (! _isEmpty(this.information)) {
+                return moment(this.information.birthday).format('DD.MM.YYYY');
+            }
         },
 
         memberSince () {
-            return moment(this.information.registered.date).format('DD.MM.YYYY');
+            if (! _isEmpty(this.information)) {
+                return moment(this.information.registered.date).format('DD.MM.YYYY');
+            }
         },
 
         userCurrency () {
-            switch (this.information.currency) {
-                case 'euro':
-                    return '€ ';
-                case 'dolar':
-                    return 'US$ ';
-                case 'real':
-                    return 'R$ ';
+            if (! _isEmpty(this.information)) {
+                switch (this.information.currency) {
+                    case 'euro':
+                        return '€ ';
+                    case 'dolar':
+                        return 'US$ ';
+                    case 'real':
+                        return 'R$ ';
+                    default:
+                        return '';
+                }
             }
         },
 
         hasActiveOrder () {
-            return _some(this.history.last5Orders, {'status': 'In transit'});
+            if (! _isEmpty(this.history)) {
+                return _some(this.history.last5Orders, {'status': 'In transit'});
+            }
         },
 
         activeOrder () {
-            return _filter(this.history.last5Orders, {'status': 'In transit'});
+            if (! _isEmpty(this.history)) {
+                return _filter(this.history.last5Orders, {'status': 'In transit'});
+            }
         },
     },
 
@@ -356,18 +388,24 @@ export default {
         },
 
         orderTime (time) {
-            return moment(time).format('DD-MM-YYYY');
+            if (! _isEmpty(time)) {
+                return moment(time).format('DD-MM-YYYY');
+            }
         },
 
         orderDateTime (time) {
-            return moment(time).format('DD-MM-YYYY HH:mm');
+            if (! _isEmpty(time)) {
+                return moment(time).format('DD-MM-YYYY HH:mm');
+            }
         },
 
         restaurantName (name) {
-            return _truncate(name, {
-                length: 28,
-                separator: '...'
-            });
+            if (! _isEmpty(name)) {
+                return _truncate(name, {
+                    length: 28,
+                    separator: '...'
+                });
+            }
         },
 
         toggleEditBlock () {
@@ -380,11 +418,13 @@ export default {
         },
 
         deliveryClass (itemStatus) {
-            switch (itemStatus) {
-                case 'In transit':
-                    return 'in-transit';
-                case 'Delivered':
-                    return 'delivered';
+            if (! _isEmpty(itemStatus)) {
+                switch (itemStatus) {
+                    case 'In transit':
+                        return 'in-transit';
+                    case 'Delivered':
+                        return 'delivered';
+                }
             }
         },
 

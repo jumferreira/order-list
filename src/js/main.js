@@ -1,3 +1,4 @@
+// Imports
 import Vue from 'vue';
 import Vuex from 'vuex';
 import _axios from 'axios';
@@ -26,13 +27,16 @@ Vue.use(VueLazyload);
 Vue.use(VModal);
 Vue.use(VueI18n);
 
+// Languages
 const messages = languages;
+export default messages;
 
 const i18n = new VueI18n({
   locale: 'en', // set locale
   messages, // set locale messages
 })
 
+// Vuex
 const store = new Vuex.Store({
     modules: {
         customer,

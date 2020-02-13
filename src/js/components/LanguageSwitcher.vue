@@ -21,6 +21,8 @@
 
 <script>
 export default {
+    name: 'LanguageSwitcher',
+
     data: () => ({
         languages: [
             {

@@ -18,9 +18,16 @@ mix
             new HtmlWebpackPlugin({
                 template: './src/index.html',
                 hash: true,
-            }),
+            })
         ],
         output: { publicPath: '' },
+        module.exports = {
+          resolve: {
+            alias: {
+              'vue$': 'vue/dist/vue.esm.js'
+            }
+          }
+        }
     })
     .purgeCss({
         globs: [ './src/**/index.html', './src/**/*.vue' ],
