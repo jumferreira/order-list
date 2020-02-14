@@ -4,7 +4,6 @@ import Vuex from 'vuex';
 import _axios from 'axios';
 import _lodash from 'lodash';
 
-import VueLazyload from 'vue-lazyload';
 import VModal from 'vue-js-modal';
 import VueI18n from 'vue-i18n';
 
@@ -17,13 +16,14 @@ window._ = _lodash;
 // components
 import App from './components/App.vue';
 import LanguageSwitcher from './components/LanguageSwitcher.vue';
+import LastOrders from './plugins/LastOrders';
 
 Vue.component('app', App);
 Vue.component('language-switcher', LanguageSwitcher);
 
 // Uses
+Vue.use(LastOrders);
 Vue.use(Vuex);
-Vue.use(VueLazyload);
 Vue.use(VModal);
 Vue.use(VueI18n);
 

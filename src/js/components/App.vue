@@ -154,46 +154,13 @@
                     </div>
 
                     <div class="column history_column">
-                        <div class="order-history">
-                            <h2 class="order-history__title">{{ $t("history.title") }}</h2>
+                        <h2 class="order-history__title">{{ $t("history.title") }}</h2>
 
-                            <ul v-if="history" class="order-history__list">
-                                <li
-                                    v-for="(item, key) in history.last5Orders"
-                                    :key="key"
-                                    class="order-history__item"
-                                >
-                                    <div class="flex justify-between">
-                                        <span
-                                            class="order-history__item-restaurant"
-                                            v-text="restaurantName(item.restaurantName)"
-                                            :title="item.restaurantName"
-                                        ></span>
-                                        <span
-                                            class="order-history__item-time"
-                                            v-text="'(' + orderTime(item.orderTime) + ')'"
-                                        ></span>
-                                    </div>
-
-                                    <p
-                                        class="order-history__item-total"
-                                        v-text="userCurrency + item.orderTotal"
-                                    ></p>
-
-                                    <div v-if="item">
-                                        <span class="order-history__item-status">
-                                            {{ $t("history.status") }}
-                                        </span>
-
-                                        <span
-                                            class="order-history__item-status"
-                                            :class="deliveryClass(item.status)"
-                                            v-text="item.status"
-                                        ></span>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
+                        <last-orders
+                            :numberOfVisibleOrders="5"
+                            :currency="information.currency"
+                            :lastOrders="history.last5Orders"
+                        ></last-orders>
                     </div>
                 </div>
             </div>

@@ -1,66 +1,5 @@
-.order-history {
-
-    &__title {
-        @apply .mb-3;
-
-        color: $third-color;
-    }
-
-    &__list {
-        @apply
-            .flex
-            .flex-wrap
-            .justify-center;
-    }
-
-    &__item {
-        @apply
-            .p-2
-            .mr-2
-            .mb-2;
-
-        width: 100%;
-        max-width: 345px;
-        color: $font-color;
-        border: 1px solid $main-color;
-
-        &-restaurant {
-            @apply .font-bold;
-            color: $main-color;
-        }
-
-        &-time, &-details {
-            @apply .text-sm;
-
-            color: $font-color;
-        }
-
-        &-total {
-            @apply
-                .font-bold
-                .mb-3;
-
-            color: $third-color;
-        }
-
-        &-status {
-            @apply
-                .font-bold
-                .text-sm;
-
-            color: $font-color;
-
-            &.delivered {
-                color: $third-color;
-            }
-
-            &.in-transit {
-                color: $main-color;
-            }
-        }
-
-        &-details {}
-    }
+.order-history__title {
+    @apply .mb-3;
 }
 
 .history_column {
@@ -71,7 +10,7 @@
     .history_column { @apply .column--8; }
 
     .order-history__list {
-        @apply .justify-start;
+        justify-content: flex-start !important;
     }
 }
 
