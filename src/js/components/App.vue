@@ -258,7 +258,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapGetters } from 'vuex';
 import moment from 'moment';
 import {
     cloneDeep as _cloneDeep,

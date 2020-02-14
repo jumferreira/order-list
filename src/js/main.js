@@ -28,11 +28,9 @@ Vue.use(VModal);
 Vue.use(VueI18n);
 
 // Languages
-const messages = languages;
-
 const i18n = new VueI18n({
   locale: 'en',
-  messages,
+  messages: languages,
 })
 
 // Vuex
